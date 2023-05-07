@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Commandhandlers\**" />
+    <Compile Remove="Commands\**" />
+    <EmbeddedResource Remove="Commandhandlers\**" />
+    <EmbeddedResource Remove="Commands\**" />
+    <None Remove="Commandhandlers\**" />
+    <None Remove="Commands\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CleanArch.Domain.Core\Core.csproj" />
+  </ItemGroup>
+
+</Project>
