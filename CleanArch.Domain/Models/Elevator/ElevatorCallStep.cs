@@ -13,5 +13,6 @@ namespace Domain.Models.Elevator
         public int FloorId { get; set; }
         public int Priority { get; set; }
         public Floor Floor { get; set; }
+        public bool CompleteFloor { get; set; }
     }
 }

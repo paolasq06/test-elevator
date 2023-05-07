@@ -17,8 +17,5 @@ namespace Domain.Models.Elevator
         public string Name { get; set; }
         public string Description { get; set; }
         public int Speed { get; set; }
-
-
-
     }
 }

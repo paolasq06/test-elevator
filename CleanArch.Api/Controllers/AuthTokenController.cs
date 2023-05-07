@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using Application.Auth.Commands;
+﻿using Application.Auth.Commands;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace Masiv.Api.Controllers
 {
@@ -9,12 +8,8 @@ namespace Masiv.Api.Controllers
     [ApiController]
     public class AuthTokenController : ApiControllerBase
     {
-
-        private readonly ILogger<AuthTokenController> _logger;
-
-        public AuthTokenController(ILogger<AuthTokenController> logger)
+        public AuthTokenController()
         {
-            _logger = logger;
         }
 
 

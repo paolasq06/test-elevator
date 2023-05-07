@@ -6,9 +6,7 @@ using Domain.Models.Elevator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Services
@@ -55,13 +53,11 @@ namespace Application.Services
 
             if (_elevator.CurrentFloor == calledFloor)
             {
-                await this.OpenDoors();
                 await _elevatorCallStepService.Remove(step);
                 await this.Move(Id);
             }
             else
             {
-                await this.CloseDoors();
                 int floorDistance = Math.Abs(((int)_elevator.CurrentFloor - calledFloor));
                 for (int i = 0; i < floorDistance; i++)
                 {
@@ -74,48 +70,23 @@ namespace Application.Services
 
         private async Task Step(int NextCalledFloor)
         {
-            _logger.LogError("Elevator  {Id} arrive  at floor {floor}:", _elevator.Id, _elevator.CurrentFloor);
             await Task.Delay(_elevator.Speed);
             _elevator.CurrentFloor = _elevator.CurrentFloor > NextCalledFloor ?
                  --_elevator.CurrentFloor : ++_elevator.CurrentFloor;
 
             await _unitOfWork.elevator.Put(_elevator);
             await CheckCallFromFloor((int)_elevator.CurrentFloor);
-
         }
 
         private async Task CheckCallFromFloor(int floorId)
         {
-            _logger.LogError("Check for call from the floor: {floorId}", floorId);
             var callesFromFloor = await _elevatorCallStepService.GetStepsByElevatorIdAndFloorId(_elevator.Id, floorId);
             if(callesFromFloor.Count() > 0)
             {
                 await _elevatorCallStepService.RemoveSteps(callesFromFloor);
-                await this.OpenDoors();
             }
 
-
             _elevator.DoorStatus = (int)ElevatorDoorStatus.Closed;
-            await _unitOfWork.elevator.Put(_elevator);
-        }
-
-        private async Task CloseDoors()
-        {
-            _logger.LogError("Elevator  {Id} door is Closed at floor {floor}:", _elevator.Id, _elevator.CurrentFloor);
-            if (_elevator.DoorStatus == (int)ElevatorDoorStatus.Closed)
-                return;
-
-            _elevator.DoorStatus = (int)ElevatorDoorStatus.Closed;
-            await _unitOfWork.elevator.Put(_elevator);
-        }
-
-        private async Task OpenDoors()
-        {
-            _logger.LogError("Elevator  {Id} door is open at floor {floor}:", _elevator.Id , _elevator.CurrentFloor);
-            if (_elevator.DoorStatus == (int)ElevatorDoorStatus.Opened)
-                return;
-
-            _elevator.DoorStatus = (int)ElevatorDoorStatus.Opened;
             await _unitOfWork.elevator.Put(_elevator);
         }
     }

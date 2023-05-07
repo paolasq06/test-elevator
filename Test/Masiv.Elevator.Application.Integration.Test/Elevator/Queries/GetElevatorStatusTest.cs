@@ -37,9 +37,6 @@ namespace Masiv.Elevator.Application.Integration.Test.Elevator.Queries
             SendAsync(query)).Should().ThrowAsync<NotFoundException>();
         }
 
-
-
-
     }
 }
 
